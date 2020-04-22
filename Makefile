@@ -105,6 +105,9 @@ email-test: main
 mixed-test: main
 	$(PRELOAD_LIB) ./main --mixed-test
 
+run-single: main
+	$(PRELOAD_LIB) ./main --run-single
+
 prepare:
 	mkdir -p build
 	mkdir -p ./stl_test/bin

@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
   bool run_infinite_insert_test = false;
   bool run_email_test = false;
   bool run_mixed_test = false;
+  bool run_single = false;
 
   int opt_index = 1;
   while(opt_index < argc) {
@@ -57,6 +58,8 @@ int main(int argc, char **argv) {
       run_email_test = true;
     } else if(strcmp(opt_p, "--mixed-test") == 0) {
       run_mixed_test = true;
+	} else if(strcmp(opt_p, "--run-single") == 0) {
+		run_single = true;
     } else {
       printf("ERROR: Unknown option: %s\n", opt_p);
 
@@ -383,6 +386,58 @@ int main(int argc, char **argv) {
     LaunchParallelTestID(t1, 8, StressTest, t1);
 
     DestroyTree(t1);
+  }
+
+  if(run_single == true) {
+  	int scale = 500000;
+	  std::cout << "insertion_ratio,write_time,read_time,sum" << std::endl;
+	  for (int ratio = 1; ratio <= 5; ratio++) {
+		  long result = 0;
+		  long duration1 = 0;
+		  long duration2 = 0;
+		  for (int x = 0; x < 10; x++) {
+			  int overall_size = scale * (1 + 0.1*ratio);
+			  int array[overall_size];
+			  int payload[overall_size];
+			  for (int i = 0; i < overall_size; i++) {
+				  array[i] = rand() % std::numeric_limits<int>::max();
+				  payload[i] = 1;
+			  }
+			  std::vector<int> keys_load(array, array + scale);
+			  std::vector<int> keys_insert(array + scale, array + overall_size);
+			  std::vector<int> all_keys(array, array + overall_size);
+			  std::sort(keys_load.begin(), keys_load.end());
+
+			  t1 = GetEmptyTree(true);
+
+			  // Only bulk load some keys
+			  for (int j = 0; j < keys_load.size(); ++j) {
+				  t1->Insert(keys_load[j], 1);
+			  }
+			  auto start_time = std::chrono::high_resolution_clock::now();
+			  for (int k = 0; k < keys_insert.size(); ++k) {
+				  int idx = k;
+				  t1->Insert(keys_insert[idx], 1);
+			  }
+			  auto after_insertion = std::chrono::high_resolution_clock::now();
+			  std::vector<long> v{};
+			  v.reserve(1);
+			  for (int l = 0; l < all_keys.size(); ++l) {
+				  int idx = rand()%all_keys.size();
+				  t1->GetValue(all_keys[idx], v);
+				  result += v[0];
+				  v.clear();
+			  }
+			  auto end_time = std::chrono::high_resolution_clock::now();
+			  duration1 += std::chrono::duration_cast<std::chrono::nanoseconds>(after_insertion - start_time).count();
+			  duration2 += std::chrono::duration_cast<std::chrono::nanoseconds>(end_time - after_insertion).count();
+			  DestroyTree(t1);
+		  }
+		  std::cout << ratio << ","
+					<< duration1/10 << ","
+					<< duration2/10 << ","
+					<< result << std::endl;
+	  }
   }
 
   return 0;
