@@ -198,7 +198,7 @@ class BwTreeBase {
   static constexpr size_t CACHE_LINE_MASK = ~(CACHE_LINE_SIZE - 1);
   
   // We invoke the GC procedure after this has been reached
-  static constexpr size_t GC_NODE_COUNT_THREADHOLD = 1024;
+  static constexpr size_t GC_NODE_COUNT_THREADHOLD = std::numeric_limits<size_t>::max();
   
   /*
    * class GarbageNode - Garbage node used to represent delayed allocation
