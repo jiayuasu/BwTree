@@ -6,6 +6,13 @@ make prepare
 
 make full-speed run-single
 
+or
+
+```
+make full-speed
+./main --run-single
+```
+
 ---
 # Open BwTree [![Build Status](https://travis-ci.org/wangziqi2013/BwTree.svg?branch=peloton)](https://travis-ci.org/wangziqi2013/BwTree) [![Coverage Status](https://coveralls.io/repos/github/wangziqi2013/BwTree/badge.svg?branch=master)](https://coveralls.io/github/wangziqi2013/BwTree?branch=master)
 This is an implementation of BwTree, based on a design from Microsoft Research[1]. The official implementation of BwTree by Microsoft is currently deployed in SQL Server Hekaton, Azure DocumentDB, Bing and other Microsoft products.   
