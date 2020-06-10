@@ -380,3 +380,52 @@ void RandomInsertVerify(TreeType *t) {
 
   return;
 }
+
+void RandomInsertTest_Ratio(uint64_t thread_id, std::tuple<TreeType*, int, int, int> input) {
+	TreeType* t = std::get<0>(input);
+	int num_threads = std::get<1>(input);
+	int scale = std::get<2>(input);
+	int ratio = std::get<3>(input);
+	// This defines the key space (0 ~ (1M - 1))
+	const size_t key_num = scale;
+
+	std::random_device r{};
+	std::default_random_engine e1(r());
+	std::uniform_int_distribution<int> uniform_dist(0, key_num - 1);
+
+	int insert_success_counter;
+
+	while(insert_success_counter < key_num*ratio*0.1/num_threads) {
+		int key = uniform_dist(e1);
+
+		if(t->Insert(key, key)) insert_success_counter++;
+	}
+//	std::cout << "insert num_keys " << key_num*ratio*0.1/num_threads << "\n";
+	return;
+}
+
+void RandomReadTest_Range(uint64_t thread_id, std::tuple<TreeType*, int, int, int, std::vector<int>> input) {
+	TreeType* t = std::get<0>(input);
+	int num_threads = std::get<1>(input);
+	int scale = std::get<2>(input);
+	int ratio = std::get<3>(input);
+	std::vector<int> data = std::get<4>(input);
+	// This defines the key space (0 ~ (1M - 1))
+	const size_t key_num = scale*(1 + ratio*0.1);
+
+	std::random_device r{};
+	std::default_random_engine e1(r());
+	std::uniform_int_distribution<int> uniform_dist(0, key_num - 1);
+
+	int insert_success_counter;
+	std::vector<long int> v{};
+	v.reserve(100);
+	while(insert_success_counter < key_num/num_threads) {
+		int key = uniform_dist(e1);
+		t->GetValue(data[key], v);
+		v.clear();
+		insert_success_counter++;
+	}
+//	std::cout << "insert num_keys " << key_num*ratio*0.1/num_threads << "\n";
+	return;
+}

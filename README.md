@@ -1,17 +1,26 @@
 ## Adds-on
 
-Run single-thread performance test
+GC is disabled
 
+### Compile 
+
+```
 make prepare
 
-make full-speed run-single
-
-or
-
-```
 make full-speed
-./main --run-single
 ```
+
+### Run single-thread performance test
+
+`./main --run-single`
+
+### Run multi-thread read test
+
+`./main --run-read`
+
+### Run multi-thread insert test
+
+`./main --run-insert`
 
 ---
 # Open BwTree [![Build Status](https://travis-ci.org/wangziqi2013/BwTree.svg?branch=peloton)](https://travis-ci.org/wangziqi2013/BwTree) [![Coverage Status](https://coveralls.io/repos/github/wangziqi2013/BwTree/badge.svg?branch=master)](https://coveralls.io/github/wangziqi2013/BwTree?branch=master)

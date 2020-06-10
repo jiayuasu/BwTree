@@ -108,6 +108,12 @@ mixed-test: main
 run-single: main
 	$(PRELOAD_LIB) ./main --run-single
 
+run-insert: main
+	$(PRELOAD_LIB) ./main --run-insert
+
+run-read: main
+	$(PRELOAD_LIB) ./main --run-read
+
 prepare:
 	mkdir -p build
 	mkdir -p ./stl_test/bin

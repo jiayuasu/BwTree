@@ -1021,7 +1021,8 @@ void SeqInsertRandomReadSpeedTest(TreeType *t, size_t key_num);
 void InfiniteRandomInsertTest(TreeType *t);
 void RandomInsertTest(uint64_t thread_id, TreeType *t);
 void RandomInsertVerify(TreeType *t);
-
+void RandomInsertTest_Ratio(uint64_t thread_id, std::tuple<TreeType*, int, int, int> input);
+void RandomReadTest_Range(uint64_t thread_id, std::tuple<TreeType*, int, int, int, std::vector<int>> input);
 /*
  * Misc test suite
  */

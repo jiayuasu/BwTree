@@ -35,7 +35,7 @@
 // offsetof() is defined here
 #include <cstddef>
 #include <vector>
-
+#include <iostream>
 /*
  * BWTREE_PELOTON - Specifies whether Peloton-specific features are
  *                  Compiled or not
@@ -9408,6 +9408,7 @@ try_join_again:
     // So it is important to let the epoch counter be constantly increased
     // to guarantee progress
     if(GetCurrentGCMetaData()->node_count > GC_NODE_COUNT_THREADHOLD) {
+    	std::cout << "perform GC\n";
       // Use current thread's gc id to perform GC
       PerformGC(gc_id);
     }
